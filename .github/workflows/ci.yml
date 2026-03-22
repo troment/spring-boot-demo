@@ -1,10 +1,20 @@
-name: CI                        #워크플로우이름(GitHubUI에표시)
+name: CI
 
-on: [push]                      #이벤트:push가발생할때실행
+on: [push]
 
-jobs:                           #작업들정의
-  build:                        #build라는이름의작업
-    runs-on: ubuntu-latest      #실행환경:우분투최신버전
-  steps:                        #작업단계들
-    - uses: actions/checkout@v2 #코드를runner로가져오는GitHub공식action
-    - run: echo"Hello,DevOps!"  #간단한명령어실행
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
